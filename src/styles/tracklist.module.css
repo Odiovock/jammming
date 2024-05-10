@@ -1,0 +1,12 @@
+.contentContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.tracks {
+    border: solid black 1px;
+    width: 25%;
+    margin: 10px;
+    border-radius: 5px;
+}

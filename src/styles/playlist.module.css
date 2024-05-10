@@ -1,0 +1,12 @@
+.contentContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.playlists {
+    width: 33%;
+    margin: 10px;
+    border: solid black 1px;
+    border-radius: 5px;
+}

@@ -4,6 +4,7 @@ import {Tracks, Playlists} from './mockdata/mockdata';
 import SearchBar from './components/SearchBar';
 import Tracklist from './components/Tracklist';
 import Playlist from './components/Playlist';
+import styles from './styles/app.module.css';
 
 function App() {
   const [searchResult, setSearchResult] = useState(Tracks);
@@ -28,21 +29,23 @@ function App() {
   }
 
   return (
-    <div>
-      <div>
-        <Playlist playlists={playlists} setPlaylists={setPlaylists} />
+    <div className={styles.mainPage}>
+      <section className={styles.sectionContainer}>
+        <Playlist playlists={playlists} setPlaylists={setPlaylists}/>
         <form onSubmit={handleNewPlaylistOnSubmit}>
           <input type="text" value={newPlaylist} onChange={newPlayListOnChange}/>
           <button type="submit">Create Playlist</button>
         </form>
-      </div>
+      </section>
   
-      <div>
+      <section className={styles.sectionContainer}>
         <Tracklist tracklist={searchResult}/>
         <SearchBar/>
         <button>Search</button>
-      </div>
-      <button>Save to Spotify</button>      
+      </section>
+      <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+        <button style={{margin: 'auto'}}>Save to Spotify</button>    
+      </div>  
     </div>
   );
 }
