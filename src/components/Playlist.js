@@ -1,7 +1,22 @@
 import React from "react";
 
 function Playlist (props) {
-    const playlists = props.playlists;
+    const {playlists, setPlaylists} = props;
+
+
+    function handleOnClick (event) {
+        const targetId = event.target.id;
+        const newPlaylists = [];
+
+        for (const playlist of playlists) {
+            newPlaylists.push({
+                    title: playlist.title, 
+                    tracks: playlist.tracks.filter((track) => track.id !== targetId)
+            });
+        }
+
+        setPlaylists(newPlaylists);
+    }
 
     return (
         <div>
@@ -11,7 +26,7 @@ function Playlist (props) {
                 <h3>{playlist.title}</h3>
                     <ul>
                         {playlist.tracks.map((track) => (
-                            <li>{track}</li>
+                            <li id={track.id} onClick={handleOnClick}>{track.name}</li>
                         ))}
                     </ul>
                 </div>
