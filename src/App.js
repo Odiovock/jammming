@@ -12,7 +12,6 @@ function App() {
   const [newPlaylist, setNewPlaylist] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchTypeValue, setSearchTypeValue] = useState("track");
-  const [accessToken, setAccessToken] = useState(null)
 
   const baseEndpoint = "https://api.spotify.com/v1/search";
   let client_id = localStorage.getItem("spotifyClientId");
@@ -46,6 +45,7 @@ function App() {
     url += '&state=' + encodeURIComponent(state);
 
     window.location = url;
+    onAuthorized();
   }
 
   function newPlayListOnChange (event) {
@@ -70,7 +70,7 @@ function App() {
       try {
           const response = await fetch(endpoint, {
             method: "GET",
-            headers: {"Authorization" : "Bearer " + localStorage.getItem("accessToken")}
+            headers: {"Authorization" : "Bearer " + localStorage.getItem("token")}
           });
       
           if (response.ok) {
@@ -84,7 +84,14 @@ function App() {
     }
   }
 
-  if(accessToken) {
+  function onAuthorized () {
+    const queryHash = window.location.hash;
+    const urlParams = new URLSearchParams(queryHash.substring(1));
+    const token = urlParams.get("access_token");
+    localStorage.setItem("token", token);
+  }
+
+  if(localStorage.getItem("token")) {
     return (
       <div className={styles.mainPage}>
         <section className={styles.sectionContainer}>
@@ -114,7 +121,9 @@ function App() {
     );
   } else {
     return (
-      <button onClick={handleLoginOnClick}>Login</button>
+      <div style={{display: "flex", height: "100vh", justifyContent: "center"}}>
+        <button onClick={handleLoginOnClick} style={{alignSelf: "center", justifyContent: "center"}}>Login</button>
+      </div>
     );
   }
 }
