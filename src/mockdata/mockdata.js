@@ -27,6 +27,7 @@ export const Tracks = [
 
 export const Playlists = [
     {
+        id: "1",
         title: "My sherona",
         tracks: [
           Tracks[0],
@@ -34,6 +35,7 @@ export const Playlists = [
         ]
       },
       {
+        id: "2",
         title: "Guilty pleasures",
         tracks: [
             Tracks[2],

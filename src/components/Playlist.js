@@ -24,11 +24,11 @@ function Playlist (props) {
             <h2>Playlist</h2>
             <div className={styles.contentContainer}>
             {playlists.map((playlist) => (
-                <div className={styles.playlists}>
+                <div key={playlist.id} className={styles.playlists}>
                 <h3>{playlist.title}</h3>
                     <ul>
                         {playlist.tracks.map((track) => (
-                            <li id={track.id} onClick={handleOnClick}>{track.name}</li>
+                            <li key={track.id} onClick={handleOnClick}>{track.name}</li>
                         ))}
                     </ul>
                 </div>
