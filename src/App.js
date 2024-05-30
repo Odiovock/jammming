@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import './App.css';
-import {Tracks, Playlists} from './mockdata/mockdata';
+
 import SearchBar from './components/SearchBar';
 import Tracklist from './components/Tracklist';
 import Playlist from './components/Playlist';
+import { Tracks, Playlists } from './datahandler/SearchData';
+
 import styles from './styles/app.module.css';
+import './App.css';
 
 function App() {
   const [searchResult, setSearchResult] = useState(Tracks);
@@ -12,12 +14,18 @@ function App() {
   const [newPlaylist, setNewPlaylist] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchTypeValue, setSearchTypeValue] = useState("track");
+  const [searchResults, setSearchResults] = useState({});
+  const [hasSessionToken, setHasSessionToken] = useState(false);
 
   const baseEndpoint = "https://api.spotify.com/v1/search";
   let client_id = localStorage.getItem("spotifyClientId");
 
   useEffect(() => {
     document.title = "Spotify App";
+    
+    if(window.location.hash) {
+      onAuthorized();
+    }
   }, []);
 
   function handleLoginOnClick () {
@@ -45,7 +53,6 @@ function App() {
     url += '&state=' + encodeURIComponent(state);
 
     window.location = url;
-    onAuthorized();
   }
 
   function newPlayListOnChange (event) {
@@ -70,12 +77,14 @@ function App() {
       try {
           const response = await fetch(endpoint, {
             method: "GET",
-            headers: {"Authorization" : "Bearer " + localStorage.getItem("token")}
+            headers: {"Authorization" : "Bearer " + window.sessionStorage.getItem("token")}
           });
       
           if (response.ok) {
             const jsonResponse = await response.json();
             console.log(jsonResponse);
+            setSearchResults(jsonResponse);
+            console.log(searchResults);
           }
         }
         catch (error){
@@ -88,10 +97,11 @@ function App() {
     const queryHash = window.location.hash;
     const urlParams = new URLSearchParams(queryHash.substring(1));
     const token = urlParams.get("access_token");
-    localStorage.setItem("token", token);
+    sessionStorage.setItem("token", token);
+    setHasSessionToken(true);
   }
 
-  if(localStorage.getItem("token")) {
+  if(hasSessionToken) {
     return (
       <div className={styles.mainPage}>
         <section className={styles.sectionContainer}>
