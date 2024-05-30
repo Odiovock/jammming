@@ -14,14 +14,16 @@ function App() {
   const [newPlaylist, setNewPlaylist] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchTypeValue, setSearchTypeValue] = useState("track");
-  const [searchResults, setSearchResults] = useState({});
+  const [searchResults, setSearchResults] = useState();
   const [hasSessionToken, setHasSessionToken] = useState(false);
 
   const baseEndpoint = "https://api.spotify.com/v1/search";
-  let client_id = localStorage.getItem("spotifyClientId");
+  let client_id;
 
   useEffect(() => {
     document.title = "Spotify App";
+    localStorage.setItem("spotifyClientId", "723d8a14cbdb4f5e81acee881eb7f308");
+    client_id = localStorage.getItem("spotifyClientId");
     
     if(window.location.hash) {
       onAuthorized();
@@ -71,9 +73,10 @@ function App() {
 
   async function handleSearchOnSubmit (event) {
     event.preventDefault();
+    setSearchResults();
 
     if (searchInput) {
-      const endpoint = baseEndpoint + "?q=" + searchInput + "&type=" + searchTypeValue;
+      const endpoint = baseEndpoint + "?q=" + searchInput + "&type=track";
       try {
           const response = await fetch(endpoint, {
             method: "GET",
@@ -82,9 +85,7 @@ function App() {
       
           if (response.ok) {
             const jsonResponse = await response.json();
-            console.log(jsonResponse);
             setSearchResults(jsonResponse);
-            console.log(searchResults);
           }
         }
         catch (error){
@@ -101,6 +102,7 @@ function App() {
     setHasSessionToken(true);
   }
 
+  console.log(searchResults);
   if(hasSessionToken) {
     return (
       <div className={styles.mainPage}>
@@ -113,13 +115,11 @@ function App() {
         </section>
     
         <section className={styles.sectionContainer}>
-          <Tracklist tracklist={searchResult}/>
+          <Tracklist tracklist={searchResult} searchResults={searchResults}/>
           <form onSubmit={handleSearchOnSubmit}>
             <SearchBar 
               searchInput={searchInput} 
               setSearchInput={setSearchInput} 
-              searchTypeValue={searchTypeValue}
-              setSearchTypeValue={setSearchTypeValue}
             />
             <button type="submit">Search</button>
           </form>
