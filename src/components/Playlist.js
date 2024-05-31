@@ -20,20 +20,17 @@ function Playlist (props) {
     }
 
     return (
-        <div>
-            <h2>Playlist</h2>
-            <div className={styles.contentContainer}>
-            {playlists.map((playlist) => (
-                <div key={playlist.id} className={styles.playlists}>
-                <h3>{playlist.title}</h3>
-                    <ul>
-                        {playlist.tracks.map((track) => (
-                            <li key={track.id} onClick={handleOnClick}>{track.name}</li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
+        <div className={styles.contentContainer}>
+        {playlists.map((playlist) => (
+            <div key={playlist.id} className={styles.playlists}>
+            <h3>{playlist.title}</h3>
+                <ul>
+                    {playlist.tracks.map((track) => (
+                        <li key={track.id} onClick={handleOnClick}>{track.name}</li>
+                    ))}
+                </ul>
             </div>
+        ))}
         </div>
     )
 }

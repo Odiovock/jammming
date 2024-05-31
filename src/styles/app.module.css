@@ -9,9 +9,6 @@
     max-width: 45%;
     max-height: 845px;
     text-align: center;
-    justify-content: space-between;
-    display: flex;
-    flex-direction: column;
 }
 
 .sectionContainer ul {
@@ -20,4 +17,8 @@
 
 .sectionContainer li {
     list-style-type: none;
+}
+
+.barComponentMargin {
+    margin: 20px;
 }

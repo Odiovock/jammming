@@ -119,16 +119,17 @@ function App() {
     return (
       <div className={styles.mainPage}>
         <section className={styles.sectionContainer}>
-          <Playlist playlists={playlists} setPlaylists={setPlaylists}/>
-          <form onSubmit={handleNewPlaylistOnSubmit}>
+          <h2>Create your own playlists</h2>
+          <form onSubmit={handleNewPlaylistOnSubmit} className={styles.barComponentMargin}>
             <input type="text" value={newPlaylist} onChange={newPlayListOnChange}/>
             <button type="submit">Create Playlist</button>
           </form>
+          <Playlist playlists={playlists} setPlaylists={setPlaylists}/>
         </section>
     
         <section className={styles.sectionContainer}>
-          <Tracklist searchResults={searchResults}/>
-          <form onSubmit={handleSearchOnSubmit} className={styles.bottomComponent}>
+          <h2>Track list</h2>
+          <form onSubmit={handleSearchOnSubmit} className={styles.barComponentMargin}>
             <SearchBar 
               searchInput={searchInput} 
               setSearchInput={setSearchInput}
@@ -137,9 +138,10 @@ function App() {
               setSearchOffSet={setSearchOffSet}
             />
           </form>
+          <Tracklist searchResults={searchResults}/>
         </section>
         <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-          <button style={{margin: 'auto'}}>Save to Spotify</button>    
+          <button style={{margin: '30px auto'}}>Save to Spotify</button>    
         </div>  
       </div>
     );
