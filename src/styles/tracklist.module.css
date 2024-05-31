@@ -2,13 +2,15 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    max-height: 720px;
+    max-height: 700px;
     overflow: scroll;
+    margin-top: 20px;
 }
 
 .tracks {
     border: solid black 1px;
-    width: 28%;
+    width: 23%;
+    min-height: 200px;
     margin: 5px;
     border-radius: 5px;
     padding: 5px;
@@ -24,5 +26,4 @@
 
 .trackImg {
     margin-top: 20px;
-
 }

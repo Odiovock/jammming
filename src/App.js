@@ -121,7 +121,7 @@ function App() {
   if(hasSessionToken) {
     return (
       <div className={styles.mainPage}>
-        <section className={styles.sectionContainer}>
+        <section className={styles.playlistSectionContainer}>
           <h2>Create your own playlists</h2>
           <form onSubmit={handleNewPlaylistOnSubmit} className={styles.barComponentMargin}>
             <input type="text" value={newPlaylist} onChange={newPlayListOnChange}/>
@@ -133,7 +133,7 @@ function App() {
           />
         </section>
     
-        <section className={styles.sectionContainer}>
+        <section className={styles.trackListSectionContainer}>
           <h2>Track list</h2>
           <form onSubmit={handleSearchOnSubmit} className={styles.barComponentMargin}>
             <SearchBar 

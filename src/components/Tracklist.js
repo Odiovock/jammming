@@ -13,24 +13,28 @@ function Tracklist (props) {
     function handleAddOnclick (event) {
         event.preventDefault();
         const clickedId = event.target.value;
+        console.log(clickedId);
+        
 
         const workingArray = [...playlists];
         const currentTrackArray = searchResults.tracks.items;
         for (const playlist of workingArray) {
             if (playlist.isSelected) {
-                const selectedTrack = currentTrackArray.filter((track) => track.id === clickedId);
-                const trackdetails = {
-                    "id": selectedTrack[0].id,
-                    "name": selectedTrack[0].name,
-                    "artist": selectedTrack[0].artists[0].name,
-                    "album": selectedTrack[0].album.name,
-                    "uri": selectedTrack[0].uri,
-                    "preview": selectedTrack[0].preview_url,
-                    "img": selectedTrack[0].album.images[2].url
+                console.log(playlist);
+                console.log(playlist.tracks.indexOf(clickedId));
+                if(playlist.tracks.indexOf(clickedId) === -1) {
+                    const selectedTrack = currentTrackArray.filter((track) => track.id === clickedId);
+                    const trackdetails = {
+                        "id": selectedTrack[0].id,
+                        "name": selectedTrack[0].name,
+                        "artist": selectedTrack[0].artists[0].name,
+                        "album": selectedTrack[0].album.name,
+                        "uri": selectedTrack[0].uri,
+                        "preview": selectedTrack[0].preview_url,
+                        "img": selectedTrack[0].album.images[2].url
+                    }
+                    playlist.tracks.push(trackdetails);
                 }
-                playlist.tracks.push(trackdetails);
-                console.log(selectedTrack);
-                console.log(trackdetails);
             }
         }
         setPlaylists(workingArray);

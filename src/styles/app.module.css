@@ -4,21 +4,40 @@
     justify-content: space-around;
 }
 
-.sectionContainer {
+.trackListSectionContainer {
     min-width: 480px;
-    max-width: 45%;
+    max-width: 55%;
     max-height: 845px;
     text-align: center;
 }
 
-.sectionContainer ul {
+.trackListSectionContainer ul {
     padding: 0px;
 }
 
-.sectionContainer li {
+.trackListSectionContainer li {
     list-style-type: none;
 }
 
-.barComponentMargin {
+.trackListSectionContainer {
+    margin: 20px;
+}
+
+.playlistSectionContainer {
+    min-width: 480px;
+    max-width: 40%;
+    max-height: 845px;
+    text-align: center;
+}
+
+.playlistSectionContainer ul {
+    padding: 0px;
+}
+
+.playlistSectionContainer li {
+    list-style-type: none;
+}
+
+.playlistSectionContainer {
     margin: 20px;
 }

@@ -2,18 +2,42 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    max-height: 700px;
+    overflow: scroll;
+    margin-top: 20px;
+}
+
+.tracksContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .playlists {
-    width: 100%;
+    width: 45%;
+    max-height: 320px;
+    overflow: scroll;
     margin: 10px;
     border: solid black 1px;
     border-radius: 5px;
 }
 
 .selectedPlaylist {
-    width: 100%;
+    width: 45%;
+    max-height: 320px;
+    overflow: scroll;
     margin: 10px;
     border: solid rgb(6, 190, 6) 5px;
     border-radius: 5px;
+}
+
+.playlistsTracks {
+    width: 80%;
+    margin: 20px;
+    border: solid black 1px;
+    border-radius: 5px;
+}
+
+.trackImg {
+    margin-top: 20px;
 }
