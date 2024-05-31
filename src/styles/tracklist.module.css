@@ -2,11 +2,21 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    max-height: 750px;
+    overflow: scroll;
 }
 
 .tracks {
     border: solid black 1px;
-    width: 25%;
+    width: 28%;
     margin: 10px;
     border-radius: 5px;
+}
+
+.tracks li {
+    margin-top: 10px;
+}
+
+.trackImg {
+    margin-top: 25px;
 }

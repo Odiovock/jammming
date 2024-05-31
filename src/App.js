@@ -3,18 +3,19 @@ import React, {useState, useEffect} from 'react';
 import SearchBar from './components/SearchBar';
 import Tracklist from './components/Tracklist';
 import Playlist from './components/Playlist';
-import { Tracks, Playlists } from './datahandler/SearchData';
+import { Playlists } from './datahandler/TempPlaylists';
 
 import styles from './styles/app.module.css';
 import './App.css';
 
 function App() {
-  const [searchResult, setSearchResult] = useState(Tracks);
   const [playlists, setPlaylists] = useState(Playlists);
   const [newPlaylist, setNewPlaylist] = useState("");
+
   const [searchInput, setSearchInput] = useState("");
-  const [searchTypeValue, setSearchTypeValue] = useState("track");
   const [searchResults, setSearchResults] = useState();
+  const [searchOffSet, setSearchOffSet] = useState("0");
+
   const [hasSessionToken, setHasSessionToken] = useState(false);
 
   const baseEndpoint = "https://api.spotify.com/v1/search";
@@ -29,6 +30,10 @@ function App() {
       onAuthorized();
     }
   }, []);
+
+  useEffect(() => {
+    queryApi();
+  }, [searchOffSet]);
 
   function handleLoginOnClick () {
     function createRandomString(length) {
@@ -71,28 +76,35 @@ function App() {
     }
   }
 
-  async function handleSearchOnSubmit (event) {
+  function handleSearchOnSubmit (event) {
     event.preventDefault();
-    setSearchResults();
-
-    if (searchInput) {
-      const endpoint = baseEndpoint + "?q=" + searchInput + "&type=track";
-      try {
-          const response = await fetch(endpoint, {
-            method: "GET",
-            headers: {"Authorization" : "Bearer " + window.sessionStorage.getItem("token")}
-          });
-      
-          if (response.ok) {
-            const jsonResponse = await response.json();
-            setSearchResults(jsonResponse);
-          }
-        }
-        catch (error){
-          console.log(error);
-        }
-    }
+    queryApi();
   }
+
+
+  async function queryApi () {
+  setSearchResults();
+
+  if (searchInput) {
+    const endpoint = baseEndpoint + "?q=" + searchInput + "&type=track&limit=9" + "&offset=" + searchOffSet;
+    try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: {"Authorization" : "Bearer " + window.sessionStorage.getItem("token")}
+        });
+    
+        if (response.ok) {
+          const jsonResponse = await response.json();
+          setSearchResults(jsonResponse);
+        }
+      }
+      catch (error){
+        console.log(error);
+      }
+  }
+
+  console.log(searchOffSet);
+}
 
   function onAuthorized () {
     const queryHash = window.location.hash;
@@ -115,13 +127,15 @@ function App() {
         </section>
     
         <section className={styles.sectionContainer}>
-          <Tracklist tracklist={searchResult} searchResults={searchResults}/>
-          <form onSubmit={handleSearchOnSubmit}>
+          <Tracklist searchResults={searchResults}/>
+          <form onSubmit={handleSearchOnSubmit} className={styles.bottomComponent}>
             <SearchBar 
               searchInput={searchInput} 
-              setSearchInput={setSearchInput} 
+              setSearchInput={setSearchInput}
+              searchResults={searchResults}
+              searchOffSet={searchOffSet}
+              setSearchOffSet={setSearchOffSet}
             />
-            <button type="submit">Search</button>
           </form>
         </section>
         <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>

@@ -7,8 +7,11 @@
 .sectionContainer {
     min-width: 480px;
     max-width: 45%;
+    max-height: 845px;
     text-align: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
 }
 
 .sectionContainer ul {
