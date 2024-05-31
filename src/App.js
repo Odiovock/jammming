@@ -3,7 +3,6 @@ import React, {useState, useEffect} from 'react';
 import SearchBar from './components/SearchBar';
 import Tracklist from './components/Tracklist';
 import Playlist from './components/Playlist';
-import { Playlists } from './datahandler/TempPlaylists';
 
 import styles from './styles/app.module.css';
 import './App.css';
@@ -11,7 +10,6 @@ import './App.css';
 function App() {
   const [playlists, setPlaylists] = useState([]);
   const [newPlaylist, setNewPlaylistInput] = useState("");
-  const [selectedPlaylist, setSelectedPlaylist] = useState();
   const [playlistId, setPlaylistId] = useState(0);
 
   const [searchInput, setSearchInput] = useState("");
@@ -132,8 +130,6 @@ function App() {
           <Playlist 
             playlists={playlists} 
             setPlaylists={setPlaylists}
-            selectedPlaylist={selectedPlaylist}
-            setSelectedPlaylist={setSelectedPlaylist}
           />
         </section>
     
@@ -150,6 +146,8 @@ function App() {
           </form>
           <Tracklist 
             searchResults={searchResults}
+            playlists={playlists}
+            setPlaylists={setPlaylists}
           />
         </section>
         <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>

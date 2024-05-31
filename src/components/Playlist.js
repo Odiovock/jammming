@@ -5,16 +5,15 @@ function Playlist (props) {
     const {
         playlists, 
         setPlaylists,
-        selectedPlaylist,
-        setSelectedPlaylist
     } = props;
 
 
     function handleOnClick (event) {
         const proceedWithDeletion = window.confirm("Are you sure you want to delete this track from your playlist?");
 
-        if( proceedWithDeletion === true) {
+        if(proceedWithDeletion === true) {
             const targetId = event.target.id;
+            console.log(targetId);
             const newPlaylists = [];
             for (const playlist of playlists) {
                 newPlaylists.push({
@@ -28,11 +27,9 @@ function Playlist (props) {
 
     function handlePlaylistOnclick (event) {
         const targetId = parseInt(event.currentTarget.id);
-        
-        setSelectedPlaylist(targetId);
+
         setPlaylists((prev) => {
             const workingArray = [...prev];
-            console.log(workingArray);
             for (var i = 0; i < workingArray.length; i++) {
                 if(workingArray[i].id === targetId) {
                     workingArray[i].isSelected = true;
@@ -42,8 +39,6 @@ function Playlist (props) {
             }
             return workingArray;
         });
-
-        console.log("Clicked");
     }
 
     if(playlists) {
@@ -57,11 +52,16 @@ function Playlist (props) {
                     className={playlist.isSelected ? styles.selectedPlaylist : styles.playlists}
                 >
                 <h3>{playlist.title}</h3>
-                    <ul>
-                        {playlist.tracks.map((track) => (
-                            <li key={track.id} onClick={handleOnClick}>{track.name}</li>
-                        ))}
-                    </ul>
+                {playlist.tracks.map((track) => (
+                    <div key={track.id} onClick={handleOnClick}>
+                        <a href={track.uri}><img src={track.img} alt="Album cover"/></a>
+                        <ul>
+                            <li><a href={track.uri}>{track.name}</a></li>
+                            <li>Artist: {track.artist}</li>
+                            <li>Album: {track.album}</li>
+                        </ul>
+                    </div>
+                ))}
                 </div>
             ))}
             </div>
