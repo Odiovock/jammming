@@ -10,3 +10,10 @@
     border: solid black 1px;
     border-radius: 5px;
 }
+
+.selectedPlaylist {
+    width: 100%;
+    margin: 10px;
+    border: solid rgb(6, 190, 6) 5px;
+    border-radius: 5px;
+}

@@ -10,7 +10,9 @@ import './App.css';
 
 function App() {
   const [playlists, setPlaylists] = useState([]);
-  const [newPlaylist, setNewPlaylist] = useState("");
+  const [newPlaylist, setNewPlaylistInput] = useState("");
+  const [selectedPlaylist, setSelectedPlaylist] = useState();
+  const [playlistId, setPlaylistId] = useState(0);
 
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState();
@@ -63,16 +65,22 @@ function App() {
   }
 
   function newPlayListOnChange (event) {
-    setNewPlaylist(event.target.value);
+    setNewPlaylistInput(event.target.value);
   }
 
   function handleNewPlaylistOnSubmit (event) {
     event.preventDefault();
 
     if (newPlaylist) {
-      const customPlaylist = {title: newPlaylist, tracks: []};
+      const customPlaylist = {
+        id: playlistId, 
+        title: newPlaylist, 
+        tracks: [], 
+        isSelected: false
+      };
       setPlaylists((prevList) => [...prevList, customPlaylist])
-      setNewPlaylist("");
+      setNewPlaylistInput("");
+      setPlaylistId((prev) => prev += 1);
     }
   }
 
@@ -102,8 +110,6 @@ function App() {
         console.log(error);
       }
   }
-
-  console.log(searchOffSet);
 }
 
   function onAuthorized () {
@@ -114,7 +120,6 @@ function App() {
     setHasSessionToken(true);
   }
 
-  console.log(searchResults);
   if(hasSessionToken) {
     return (
       <div className={styles.mainPage}>
@@ -127,6 +132,8 @@ function App() {
           <Playlist 
             playlists={playlists} 
             setPlaylists={setPlaylists}
+            selectedPlaylist={selectedPlaylist}
+            setSelectedPlaylist={setSelectedPlaylist}
           />
         </section>
     

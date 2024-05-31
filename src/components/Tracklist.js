@@ -6,7 +6,6 @@ function Tracklist (props) {
 
     if(searchResults) {
         const tracks = searchResults.tracks.items;
-        console.log(tracks);
 
         return(
             <div className={styles.contentContainer}>
