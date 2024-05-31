@@ -9,7 +9,7 @@ import styles from './styles/app.module.css';
 import './App.css';
 
 function App() {
-  const [playlists, setPlaylists] = useState(Playlists);
+  const [playlists, setPlaylists] = useState([]);
   const [newPlaylist, setNewPlaylist] = useState("");
 
   const [searchInput, setSearchInput] = useState("");
@@ -124,7 +124,10 @@ function App() {
             <input type="text" value={newPlaylist} onChange={newPlayListOnChange}/>
             <button type="submit">Create Playlist</button>
           </form>
-          <Playlist playlists={playlists} setPlaylists={setPlaylists}/>
+          <Playlist 
+            playlists={playlists} 
+            setPlaylists={setPlaylists}
+          />
         </section>
     
         <section className={styles.sectionContainer}>
@@ -138,7 +141,9 @@ function App() {
               setSearchOffSet={setSearchOffSet}
             />
           </form>
-          <Tracklist searchResults={searchResults}/>
+          <Tracklist 
+            searchResults={searchResults}
+          />
         </section>
         <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
           <button style={{margin: '30px auto'}}>Save to Spotify</button>    

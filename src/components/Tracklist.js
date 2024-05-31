@@ -2,10 +2,10 @@ import React from "react";
 import styles from "../styles/tracklist.module.css"
 
 function Tracklist (props) {
-    const newList = props.searchResults;
+    const {searchResults} = props;
 
-    if(newList) {
-        const tracks = newList.tracks.items;
+    if(searchResults) {
+        const tracks = searchResults.tracks.items;
         console.log(tracks);
 
         return(
