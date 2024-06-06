@@ -49,19 +49,22 @@ function Playlist (props) {
                     onClick={handlePlaylistOnclick}  
                     className={playlist.isSelected ? styles.selectedPlaylist : styles.playlists}
                 >
-                <h3>{playlist.title}</h3>
-                <div className={styles.tracksContainer}>
-                    {playlist.tracks.map((track) => (
-                        <div key={track.id} id={track.id} onClick={handleOnClick} className={styles.playlistsTracks}>
-                            <img src={track.img} alt="Album cover"className={styles.trackImg}/>
-                            <ul>
-                                <li><a href={track.uri}>{track.name}</a></li>
-                                <li>Artist: {track.artist}</li>
-                                <li>Album: {track.album}</li>
-                            </ul>
-                        </div>
-                    ))}
-                </div>
+                    <div className={styles.stickyContent}>
+                        <h3 >{playlist.title}</h3>
+                        <hr/>
+                    </div>
+                    <div className={styles.tracksContainer}>
+                        {playlist.tracks.map((track) => (
+                            <div key={track.id} id={track.id} onClick={handleOnClick} className={styles.playlistsTracks}>
+                                <img src={track.img} alt="Album cover"className={styles.trackImg}/>
+                                <ul>
+                                    <li><a href={track.uri}>{track.name}</a></li>
+                                    <li>Artist: {track.artist}</li>
+                                    <li>Album: {track.album}</li>
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             ))}
             </div>
