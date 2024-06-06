@@ -12,14 +12,16 @@ function Playlist (props) {
         const targetId = event.currentTarget.id;
         console.log(targetId);
         if(window.confirm("Are you sure you want to delete this track from your playlist?") === true) {
-            const newPlaylists = [];
-            for (const playlist of playlists) {
-                newPlaylists.push({
-                        title: playlist.title, 
-                        tracks: playlist.tracks.filter((track) => track.id !== targetId)
-                });
-            }
-            setPlaylists((prev) => [...prev, newPlaylists]);
+            setPlaylists((prev) => {
+                const newPlaylists = [];
+                for (const playlist of prev) {
+                    const filteredPlaylist = playlist.tracks.filter((track) => track.id !== targetId);
+                    const newPlaylist = playlist;
+                    newPlaylist.tracks = [...filteredPlaylist];
+                    newPlaylists.push(newPlaylist);
+                }
+                return newPlaylists;
+            });
         } 
     }
 
@@ -39,6 +41,7 @@ function Playlist (props) {
         });
     }
 
+    console.log(playlists);
     if(playlists) {
         return (
             <div className={styles.contentContainer}>

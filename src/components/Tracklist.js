@@ -13,16 +13,13 @@ function Tracklist (props) {
     function handleAddOnclick (event) {
         event.preventDefault();
         const clickedId = event.target.value;
-        console.log(clickedId);
-        
 
         const workingArray = [...playlists];
         const currentTrackArray = searchResults.tracks.items;
         for (const playlist of workingArray) {
             if (playlist.isSelected) {
-                console.log(playlist);
-                console.log(playlist.tracks.indexOf(clickedId));
-                if(playlist.tracks.indexOf(clickedId) === -1) {
+                console.log();
+                if(playlist.tracks.find((track) => track.id === clickedId) === undefined) {
                     const selectedTrack = currentTrackArray.filter((track) => track.id === clickedId);
                     const trackdetails = {
                         "id": selectedTrack[0].id,
@@ -35,6 +32,8 @@ function Tracklist (props) {
                     }
                     playlist.tracks.push(trackdetails);
                 }
+            } else {
+                window.alert("This song is already part of the selected playlist");
             }
         }
         setPlaylists(workingArray);
