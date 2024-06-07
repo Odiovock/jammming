@@ -70,12 +70,23 @@ function App() {
     event.preventDefault();
 
     if (newPlaylist) {
-      const customPlaylist = {
-        id: playlistId, 
-        title: newPlaylist, 
-        tracks: [], 
-        isSelected: false
-      };
+      let customPlaylist;
+      if(playlists.length > 0) {
+        customPlaylist = {
+          id: playlistId, 
+          title: newPlaylist, 
+          tracks: [], 
+          isSelected: false
+        };
+      } else {
+        customPlaylist = {
+          id: playlistId, 
+          title: newPlaylist, 
+          tracks: [], 
+          isSelected: true
+        };
+      }
+
       setPlaylists((prevList) => [...prevList, customPlaylist])
       setNewPlaylistInput("");
       setPlaylistId((prev) => prev += 1);

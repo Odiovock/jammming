@@ -52,6 +52,8 @@
 
 .trackImg {
     margin-top: 20px;
+    position: relative;
+    left: 21px;
 }
 
 .stickyContent {
@@ -68,7 +70,7 @@
 
 @media only screen and (min-width: 571px) and (max-width: 741px) {
     .playlistsTracks {
-        width: 35%;
+        width: 39%;
     }
 }
 
