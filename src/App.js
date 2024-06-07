@@ -17,10 +17,11 @@ function App() {
   const [searchResults, setSearchResults] = useState();
   const [searchOffSet, setSearchOffSet] = useState("0");
 
-  const [client_id, setClientId] = useState("723d8a14cbdb4f5e81acee881eb7f308")
+  const [client_id, setClientId] = useState("723d8a14cbdb4f5e81acee881eb7f308");
+  const [userId, setUserId] = useState("");
   const [hasSessionToken, setHasSessionToken] = useState(false);
 
-  const baseEndpoint = "https://api.spotify.com/v1/search";
+  const searchBaseEndpoint = "https://api.spotify.com/v1/search";
 
   useEffect(() => {
     document.title = "Spotify App";
@@ -55,7 +56,7 @@ function App() {
     var state = createRandomString(16);
 
     localStorage.setItem("stateKey", state);
-    var scope = 'user-read-private user-read-email';
+    var scope = 'playlist-read-private playlist-modify-private user-library-modify user-library-read';
 
     var url = 'https://accounts.spotify.com/authorize';
     url += '?response_type=token';
@@ -110,7 +111,7 @@ function App() {
   setSearchResults();
 
   if (searchInput) {
-    const endpoint = baseEndpoint + "?q=" + searchInput + "&type=track&limit=9" + "&offset=" + searchOffSet;
+    const endpoint = searchBaseEndpoint + "?q=" + searchInput + "&type=track&limit=9" + "&offset=" + searchOffSet;
     try {
         const response = await fetch(endpoint, {
           method: "GET",
@@ -125,8 +126,50 @@ function App() {
       catch (error){
         console.log(error);
       }
+    }
   }
-}
+
+  async function getUserId () {
+    try {
+      const response = await fetch("https://api.spotify.com/v1/me", {
+        method: "GET",
+        headers: {"Authorization" : "Bearer " + window.sessionStorage.getItem("token")}
+      });
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        setUserId(jsonResponse.id);
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleSavePlaylistsToSpotifyOnClick () {
+    try {
+      const selectedPlaylist = getSelectedPlaylist();
+      const endpoint = `https://api.spotify.com/v1/users/${userId}/playlists`
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Authorization" : "Bearer " + window.sessionStorage.getItem("token") 
+        },
+        ContentType : "application/json",
+        body: JSON.stringify({
+          "name" : selectedPlaylist.title,
+          "public" : false
+        })
+      });
+
+      if (response.ok) {
+        alert("Your playlist was succesfully saved to spotify");
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   function onAuthorized () {
     const queryHash = window.location.hash;
@@ -134,6 +177,11 @@ function App() {
     const token = urlParams.get("access_token");
     sessionStorage.setItem("token", token);
     setHasSessionToken(true);
+    getUserId();
+  }
+
+  function getSelectedPlaylist () {
+    return playlists.filter((playlist) => playlist.isSelected)[0];
   }
 
   if(hasSessionToken) {
@@ -182,7 +230,7 @@ function App() {
           />
         </section>
         <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-          <button style={{margin: '30px auto'}}>Save to Spotify</button>    
+          <button style={{margin: '30px auto'}} onClick={handleSavePlaylistsToSpotifyOnClick}>Save selected playlist to Spotify</button>    
         </div>  
       </div>
     );
