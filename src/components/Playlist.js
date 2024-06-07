@@ -8,7 +8,7 @@ function Playlist (props) {
     } = props;
 
 
-    function handleOnClick (event) {
+    function handleDeleteTrackOnClick (event) {
         const targetId = event.currentTarget.id;
         const targetPlaylist = event.currentTarget.getAttribute("playlist");
         
@@ -64,7 +64,13 @@ function Playlist (props) {
                     </div>
                     <div className={styles.tracksContainer}>
                         {playlist.tracks.map((track) => (
-                            <div key={track.id} id={track.id} playlist={track.playlist} onClick={handleOnClick} className={styles.playlistsTracks}>
+                            <div key={track.id} className={styles.playlistsTracks}>
+                                <button 
+                                    style={{float: "right", margin: "10px"}} 
+                                    id={track.id} 
+                                    playlist={track.playlist} 
+                                    onClick={handleDeleteTrackOnClick}
+                                >X</button>
                                 <img src={track.img} alt="Album cover"className={styles.trackImg}/>
                                 <ul>
                                     <li><a href={track.uri}>{track.name}</a></li>
