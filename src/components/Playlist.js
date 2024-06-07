@@ -5,6 +5,8 @@ function Playlist (props) {
     const {
         playlists, 
         setPlaylists,
+        newPlaylistName,
+        setNewPlaylistName
     } = props;
 
 
@@ -23,8 +25,6 @@ function Playlist (props) {
                         newPlaylists.push(newPlaylist);
                     } else {
                         newPlaylists.push(playlist);
-                        console.log(playlist.id);
-                        console.log(targetPlaylist);
                     }
                 }
                 return newPlaylists;
@@ -47,6 +47,53 @@ function Playlist (props) {
             return workingArray;
         });
     }
+
+    function handleRenamePlaylistOnClick (event) {
+        const targetPlaylist = playlists.filter((playlist) => parseInt(playlist.id) === parseInt(event.currentTarget.getAttribute("playlistid")));
+        const targetName = targetPlaylist[0].title;
+        
+        setNewPlaylistName(targetName);
+        setPlaylists((prev) => {
+            for (const playlist of prev) {
+                if (playlist.id === targetPlaylist[0].id) {
+                    playlist.isRenamed = true;
+                } else {
+                    playlist.isRenamed = false;
+                }
+            }
+
+            return [...prev];
+        });
+    }
+
+    function handleRenameFieldOnChange (event) {
+        setNewPlaylistName(event.target.value);
+    }
+
+    function handleRenameOnKeyDown (event) {
+        if(event.key === "Enter") {
+            setPlaylists((prev) => {
+                for (const playlist of prev) {
+                    if (playlist.isRenamed) {
+                        playlist.title = newPlaylistName;
+                        playlist.isRenamed = false;
+                    }
+                }
+
+                return [...prev];
+            })
+        }
+    }
+
+    function handleRenameOnBlur () {
+        setPlaylists((prev) => {
+            for (const playlist of prev) {
+                playlist.isRenamed = false;
+            }
+
+            return [...prev];
+        })
+    } 
 
     function handleDeletePlaylistOnClick (parent, event) {
         if(window.confirm("Are you sure you want to delete this playlist?")) {
@@ -72,7 +119,18 @@ function Playlist (props) {
                             style={{float: "right", top: "0px"}}
                             onClick={() => handleDeletePlaylistOnClick(playlist.id)}
                     >X</button>   
-                        <h3 >{playlist.title}</h3>
+                        {
+                            playlist.isRenamed ? 
+                            <input 
+                                type="text" 
+                                autoFocus 
+                                value={newPlaylistName} 
+                                onChange={handleRenameFieldOnChange} 
+                                onKeyDown={handleRenameOnKeyDown}
+                                onBlur={handleRenameOnBlur}
+                            /> : 
+                            <h3 playlistid={playlist.id} onClick={handleRenamePlaylistOnClick}>{playlist.title}</h3>
+                        }
                         <hr/>
                     </div>
                     <div className={styles.tracksContainer}>

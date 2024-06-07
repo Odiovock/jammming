@@ -11,6 +11,7 @@ function App() {
   const [playlists, setPlaylists] = useState([]);
   const [newPlaylist, setNewPlaylistInput] = useState("");
   const [playlistId, setPlaylistId] = useState(0);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
 
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState();
@@ -32,7 +33,6 @@ function App() {
       const localsave = localStorage.getItem("savedPlaylists");
       setPlaylists(JSON.parse(localsave));
       setPlaylistId(parseInt(localStorage.getItem("savedIndex")));
-      console.log(JSON.parse(localsave));
     }
   }, []);
 
@@ -81,14 +81,16 @@ function App() {
           id: playlistId, 
           title: newPlaylist, 
           tracks: [], 
-          isSelected: false
+          isSelected: false,
+          isRenamed: false
         };
       } else {
         customPlaylist = {
           id: playlistId, 
           title: newPlaylist, 
           tracks: [], 
-          isSelected: true
+          isSelected: true,
+          isRenamed: false
         };
       }
 
@@ -147,6 +149,7 @@ function App() {
     
     return (
       <div className={styles.mainPage}>
+        <h1 style={{display: "inline", textAlign: "center", width: "100%"}}>My spotify Custom playlists</h1>
         <section className={styles.playlistSectionContainer}>
           <h2>Create your own playlists</h2>
           <form onSubmit={handleNewPlaylistOnSubmit} className={styles.barComponentMargin}>
@@ -156,6 +159,8 @@ function App() {
           <Playlist 
             playlists={playlists} 
             setPlaylists={setPlaylists}
+            newPlaylistName={newPlaylistName}
+            setNewPlaylistName={setNewPlaylistName}
           />
         </section>
     

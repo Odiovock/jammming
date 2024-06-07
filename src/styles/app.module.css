@@ -4,6 +4,10 @@
     justify-content: space-around;
 }
 
+.mainPage section, .mainPage h2 {
+    margin-top: 0px;
+}
+
 .trackListSectionContainer {
     max-width: 55%;
     max-height: 845px;

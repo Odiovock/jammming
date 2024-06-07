@@ -58,9 +58,18 @@
 
 .stickyContent {
     position: sticky;
-    top: 19px;
+    top: 0px;
     z-index: 1;
     background-color: white;
+    padding-top: 15px;
+}
+
+.stickyContent h3 {
+    margin-top: 0px;
+}
+
+.stickyContent button {
+    margin-right: 15px;
 }
 
 @media only screen and (max-width: 570px) {
