@@ -49,11 +49,12 @@ function Playlist (props) {
     }
 
     function handleDeletePlaylistOnClick (parent, event) {
-        console.log("clicked");
-        setPlaylists((prev) => {
-            const filteredPlaylistArray = prev.filter((playlist) => playlist.id !== parent);
-            return filteredPlaylistArray;
-        });
+        if(window.confirm("Are you sure you want to delete this playlist?")) {
+            setPlaylists((prev) => {
+                const filteredPlaylistArray = prev.filter((playlist) => playlist.id !== parent);
+                return filteredPlaylistArray;
+            });
+        }
     }
 
     if(playlists) {
@@ -66,11 +67,11 @@ function Playlist (props) {
                     onClick={handlePlaylistOnclick}  
                     className={playlist.isSelected ? styles.selectedPlaylist : styles.playlists}
                 >
+                    <div className={styles.stickyContent}>
                     <button
-                            style={{float: "right", margin: "10px"}}
+                            style={{float: "right", top: "0px"}}
                             onClick={() => handleDeletePlaylistOnClick(playlist.id)}
-                    >X</button>
-                    <div className={styles.stickyContent}>   
+                    >X</button>   
                         <h3 >{playlist.title}</h3>
                         <hr/>
                     </div>

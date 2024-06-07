@@ -138,6 +138,11 @@ function App() {
     if(playlists.length > 0) {
       localStorage.setItem("savedPlaylists", JSON.stringify(playlists));
       localStorage.setItem("savedIndex", playlistId);
+    } else if (playlists.length === 0) {
+      if(localStorage.getItem("savedPlaylists")) {
+        localStorage.removeItem("savedPlaylists");
+        localStorage.removeItem("savedIndex");
+      }
     }
     
     return (

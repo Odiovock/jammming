@@ -60,6 +60,7 @@
     position: sticky;
     top: 19px;
     z-index: 1;
+    background-color: white;
 }
 
 @media only screen and (max-width: 570px) {
