@@ -10,15 +10,22 @@ function Playlist (props) {
 
     function handleOnClick (event) {
         const targetId = event.currentTarget.id;
-        console.log(targetId);
+        const targetPlaylist = event.currentTarget.getAttribute("playlist");
+        
         if(window.confirm("Are you sure you want to delete this track from your playlist?") === true) {
             setPlaylists((prev) => {
                 const newPlaylists = [];
                 for (const playlist of prev) {
-                    const filteredPlaylist = playlist.tracks.filter((track) => track.id !== targetId);
-                    const newPlaylist = playlist;
-                    newPlaylist.tracks = [...filteredPlaylist];
-                    newPlaylists.push(newPlaylist);
+                    if(playlist.id.toString() === targetPlaylist.toString()) {
+                        const filteredPlaylist = playlist.tracks.filter((track) => track.id !== targetId);
+                        const newPlaylist = playlist;
+                        newPlaylist.tracks = [...filteredPlaylist];
+                        newPlaylists.push(newPlaylist);
+                    } else {
+                        newPlaylists.push(playlist);
+                        console.log(playlist.id);
+                        console.log(targetPlaylist);
+                    }
                 }
                 return newPlaylists;
             });
@@ -41,7 +48,6 @@ function Playlist (props) {
         });
     }
 
-    console.log(playlists);
     if(playlists) {
         return (
             <div className={styles.contentContainer}>
@@ -58,7 +64,7 @@ function Playlist (props) {
                     </div>
                     <div className={styles.tracksContainer}>
                         {playlist.tracks.map((track) => (
-                            <div key={track.id} id={track.id} onClick={handleOnClick} className={styles.playlistsTracks}>
+                            <div key={track.id} id={track.id} playlist={track.playlist} onClick={handleOnClick} className={styles.playlistsTracks}>
                                 <img src={track.img} alt="Album cover"className={styles.trackImg}/>
                                 <ul>
                                     <li><a href={track.uri}>{track.name}</a></li>

@@ -18,7 +18,6 @@ function Tracklist (props) {
         const currentTrackArray = searchResults.tracks.items;
         for (const playlist of workingArray) {
             if (playlist.isSelected) {
-                console.log();
                 if(playlist.tracks.find((track) => track.id === clickedId) === undefined) {
                     const selectedTrack = currentTrackArray.filter((track) => track.id === clickedId);
                     const trackdetails = {
@@ -28,12 +27,13 @@ function Tracklist (props) {
                         "album": selectedTrack[0].album.name,
                         "uri": selectedTrack[0].uri,
                         "preview": selectedTrack[0].preview_url,
-                        "img": selectedTrack[0].album.images[2].url
+                        "img": selectedTrack[0].album.images[2].url,
+                        "playlist": playlists.find((playlist) => playlist.isSelected).id
                     }
                     playlist.tracks.push(trackdetails);
+                } else {
+                    window.alert("This song is already part of the selected playlist");
                 }
-            } else {
-                window.alert("This song is already part of the selected playlist");
             }
         }
         setPlaylists(workingArray);
@@ -41,7 +41,6 @@ function Tracklist (props) {
 
     if(searchResults) {
         const tracks = searchResults.tracks.items;
-
         return(
             <div className={styles.contentContainer}>
                 {tracks.map((track) => (
