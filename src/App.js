@@ -16,18 +16,23 @@ function App() {
   const [searchResults, setSearchResults] = useState();
   const [searchOffSet, setSearchOffSet] = useState("0");
 
+  const [client_id, setClientId] = useState("723d8a14cbdb4f5e81acee881eb7f308")
   const [hasSessionToken, setHasSessionToken] = useState(false);
 
   const baseEndpoint = "https://api.spotify.com/v1/search";
-  let client_id;
 
   useEffect(() => {
     document.title = "Spotify App";
-    localStorage.setItem("spotifyClientId", "723d8a14cbdb4f5e81acee881eb7f308");
-    client_id = localStorage.getItem("spotifyClientId");
     
     if(window.location.hash) {
       onAuthorized();
+    }
+
+    if(localStorage.getItem("savedPlaylists")) {
+      const localsave = localStorage.getItem("savedPlaylists");
+      setPlaylists(JSON.parse(localsave));
+      setPlaylistId(parseInt(localStorage.getItem("savedIndex")));
+      console.log(JSON.parse(localsave));
     }
   }, []);
 
@@ -130,6 +135,11 @@ function App() {
   }
 
   if(hasSessionToken) {
+    if(playlists.length > 0) {
+      localStorage.setItem("savedPlaylists", JSON.stringify(playlists));
+      localStorage.setItem("savedIndex", playlistId);
+    }
+    
     return (
       <div className={styles.mainPage}>
         <section className={styles.playlistSectionContainer}>
