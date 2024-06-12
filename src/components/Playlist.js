@@ -22,6 +22,7 @@ function Playlist (props) {
                         const filteredPlaylist = playlist.tracks.filter((track) => track.id !== targetId);
                         const newPlaylist = playlist;
                         newPlaylist.tracks = [...filteredPlaylist];
+                        newPlaylist.isAddingTracks = true;
                         newPlaylists.push(newPlaylist);
                     } else {
                         newPlaylists.push(playlist);
@@ -56,9 +57,9 @@ function Playlist (props) {
         setPlaylists((prev) => {
             for (const playlist of prev) {
                 if (playlist.id === targetPlaylist[0].id) {
-                    playlist.isRenamed = true;
+                    playlist.isRenaming = true;
                 } else {
-                    playlist.isRenamed = false;
+                    playlist.isRenaming = false;
                 }
             }
 
@@ -74,9 +75,12 @@ function Playlist (props) {
         if(event.key === "Enter") {
             setPlaylists((prev) => {
                 for (const playlist of prev) {
-                    if (playlist.isRenamed) {
+                    if (playlist.isRenaming && playlist.title !== newPlaylistName) {
                         playlist.title = newPlaylistName;
-                        playlist.isRenamed = false;
+                        playlist.isRenaming = false;
+                        playlist.isRenamed = true;
+                    } else {
+                        playlist.isRenaming = false;
                     }
                 }
 
@@ -88,7 +92,7 @@ function Playlist (props) {
     function handleRenameOnBlur () {
         setPlaylists((prev) => {
             for (const playlist of prev) {
-                playlist.isRenamed = false;
+                playlist.isRenaming = false;
             }
 
             return [...prev];
@@ -115,12 +119,12 @@ function Playlist (props) {
                     className={playlist.isSelected ? styles.selectedPlaylist : styles.playlists}
                 >
                     <div className={styles.stickyContent}>
-                    <button
-                            style={{float: "right", top: "0px"}}
-                            onClick={() => handleDeletePlaylistOnClick(playlist.id)}
-                    >X</button>   
+                        <button
+                                onClick={() => handleDeletePlaylistOnClick(playlist.id)}
+                        >X</button>
+                        {playlist.spotifyId !== "" && !playlist.isAddingTracks && !playlist.isRenamed ? <p>Saved</p> : ""}   
                         {
-                            playlist.isRenamed ? 
+                            playlist.isRenaming ? 
                             <input 
                                 type="text" 
                                 autoFocus 

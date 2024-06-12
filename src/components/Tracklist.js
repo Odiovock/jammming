@@ -31,6 +31,7 @@ function Tracklist (props) {
                         "playlist": playlists.find((playlist) => playlist.isSelected).id
                     }
                     playlist.tracks.push(trackdetails);
+                    playlist.isAddingTracks = true;
                 } else {
                     window.alert("This song is already part of the selected playlist");
                 }
