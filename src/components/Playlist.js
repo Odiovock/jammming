@@ -38,15 +38,14 @@ function Playlist (props) {
         const targetId = parseInt(event.currentTarget.id);
 
         setPlaylists((prev) => {
-            const workingArray = [...prev];
-            for (var i = 0; i < workingArray.length; i++) {
-                if(workingArray[i].id === targetId) {
-                    workingArray[i].isSelected = true;
+            for (const playlist of prev) {
+                if(playlist.id === targetId) {
+                    playlist.isSelected = true;
                 } else {
-                    workingArray[i].isSelected = false;
+                    playlist.isSelected = false;
                 }
             }
-            return workingArray;
+            return [...prev];
         });
     }
 
@@ -124,7 +123,7 @@ function Playlist (props) {
                         <button
                                 onClick={() => handleDeletePlaylistOnClick(playlist.id)}
                         >X</button>
-                        {playlist.spotifyId !== "" && !playlist.isAddingTracks && !playlist.isRenamed ? <p>Saved</p> : ""}   
+                        {!playlist.isChanged ? <p>Saved</p> : ""}   
                         {
                             playlist.isRenaming ? 
                             <input 

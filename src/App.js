@@ -109,6 +109,7 @@ function App() {
           isSelected: true,
           isRenaming: false,
           isRenamed: false,
+          isAddingTracks: false,
           isCreated: false,
           isChanged: true
         };
@@ -179,20 +180,20 @@ function App() {
       if (selectedPlaylist.isRenamed && selectedPlaylist.isCreated) {
         renameSpotifyPlaylist(selectedPlaylist);
       }
-
-      alert("Your playlist was succesfully saved to spotify")
     } else {
       alert("The playlist you selected is already saved to spotify");
     }
 
     setPlaylists((prev) => {
+      console.log(prev);
       for (const playlist of prev) {
-        if (playlist.id === selectedPlaylist.id) {
-          selectedPlaylist.isChanged = false;
+        console.log(playlist.id, selectedPlaylist.id);
+        if (playlist.id.toString() === selectedPlaylist.id.toString()) {
+          playlist.isChanged = false;
         }
-
-        return [...prev];
       }
+
+      return [...prev];
     });
   }
 
@@ -267,7 +268,7 @@ function App() {
         setPlaylists((prev) => {
           for (const playlist of prev) {
             if (playlist.id === selectedPlaylist.id) {
-              selectedPlaylist.isRenamed = false;
+              playlist.isRenamed = false;
             }
     
             return [...prev];
@@ -308,7 +309,7 @@ function App() {
         setPlaylists((prev) => {
           for (const playlist of prev) {
             if (playlist.id === selectedPlaylist.id) {
-              selectedPlaylist.isAddingTracks = false;
+              playlist.isAddingTracks = false;
             }
     
             return [...prev];
