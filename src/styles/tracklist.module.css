@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    max-height: 700px;
+    max-height: 570px;
     overflow-y: scroll;
     margin-top: 20px;
 }
@@ -12,12 +12,14 @@
 }
 
 .tracks {
-    border: solid black 1px;
+    border: solid black 3px;
     width: 27%;
     min-height: 200px;
     margin: 5px;
     border-radius: 5px;
     padding: 5px;
+    font-weight: bold;
+    background-color: rgba(0, 133, 0, 0.83);
 }
 
 .tracks li {
@@ -30,6 +32,10 @@
 
 .trackImg {
     margin-top: 20px;
+}
+
+.tracks button {
+    margin-bottom: 5px;
 }
 
 @media only screen and (max-width: 499px) {

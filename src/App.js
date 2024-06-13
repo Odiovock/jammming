@@ -339,47 +339,56 @@ function App() {
     
     return (
       <div className={styles.mainPage}>
-        <h1 style={{display: "inline", textAlign: "center", width: "100%"}}>My spotify Custom playlists</h1>
-        <section className={styles.playlistSectionContainer}>
-          <h2>Create your own playlists</h2>
-          <form onSubmit={handleNewPlaylistOnSubmit} className={styles.barComponentMargin}>
-            <input type="text" value={newPlaylist} onChange={newPlayListOnChange}/>
-            <button type="submit">Create Playlist</button>
-          </form>
-          <Playlist 
-            playlists={playlists} 
-            setPlaylists={setPlaylists}
-            newPlaylistName={newPlaylistName}
-            setNewPlaylistName={setNewPlaylistName}
-          />
-        </section>
-    
-        <section className={styles.trackListSectionContainer}>
-          <h2>Track list</h2>
-          <form onSubmit={handleSearchOnSubmit} className={styles.barComponentMargin}>
-            <SearchBar 
-              searchInput={searchInput} 
-              setSearchInput={setSearchInput}
-              searchResults={searchResults}
-              searchOffSet={searchOffSet}
-              setSearchOffSet={setSearchOffSet}
+        <div className={styles.backgroundOverlay}>
+          <header className={styles.header}>
+            <h1 style={{display: "inline", textAlign: "center", width: "100%"}}>My spotify Custom playlists</h1>
+          </header>
+
+          <section className={styles.playlistSectionContainer}>
+            <h2>Create your own playlists</h2>
+            <form onSubmit={handleNewPlaylistOnSubmit} className={styles.barComponentMargin}>
+              <input type="text" value={newPlaylist} onChange={newPlayListOnChange}/>
+              <button type="submit">Create Playlist</button>
+            </form>
+            <Playlist 
+              playlists={playlists} 
+              setPlaylists={setPlaylists}
+              newPlaylistName={newPlaylistName}
+              setNewPlaylistName={setNewPlaylistName}
             />
-          </form>
-          <Tracklist 
-            searchResults={searchResults}
-            playlists={playlists}
-            setPlaylists={setPlaylists}
-          />
-        </section>
-        <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-          <button style={{margin: '30px auto'}} onClick={handleSavePlaylistsToSpotifyOnClick}>Save selected playlist to Spotify</button>    
-        </div>  
+          </section>
+      
+          <section className={styles.trackListSectionContainer}>
+            <h2>Track list</h2>
+            <form onSubmit={handleSearchOnSubmit} className={styles.barComponentMargin}>
+              <SearchBar 
+                searchInput={searchInput} 
+                setSearchInput={setSearchInput}
+                searchResults={searchResults}
+                searchOffSet={searchOffSet}
+                setSearchOffSet={setSearchOffSet}
+              />
+            </form>
+            <Tracklist 
+              searchResults={searchResults}
+              playlists={playlists}
+              setPlaylists={setPlaylists}
+            />
+          </section>
+          <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+            <button style={{margin: '30px auto', maxHeight: "30px"}} onClick={handleSavePlaylistsToSpotifyOnClick}>Save selected playlist to Spotify</button>    
+          </div>  
+        </div>
       </div>
     );
   } else {
     return (
-      <div style={{display: "flex", height: "100vh", justifyContent: "center"}}>
-        <button onClick={handleLoginOnClick} style={{alignSelf: "center", justifyContent: "center"}}>Login</button>
+      <div className={styles.mainPage}>
+        <div className={styles.backgroundOverlay}>
+          <div style={{display: "flex", height: "100vh", justifyContent: "center"}}>
+            <button onClick={handleLoginOnClick} style={{alignSelf: "center", justifyContent: "center", width: "300px", fontSize: "48px", padding: "25px"}}>Login</button>
+          </div>
+        </div>
       </div>
     );
   }

@@ -118,6 +118,7 @@ function Playlist (props) {
                     id={playlist.id} 
                     onClick={handlePlaylistOnclick}  
                     className={playlist.isSelected ? styles.selectedPlaylist : styles.playlists}
+                    style={playlists.length > 1 ? {} : {width: "100%"}}
                 >
                     <div className={styles.stickyContent}>
                         <button
@@ -150,8 +151,8 @@ function Playlist (props) {
                                 <img src={track.img} alt="Album cover"className={styles.trackImg}/>
                                 <ul>
                                     <li><a href={track.uri}>{track.name}</a></li>
-                                    <li>Artist: {track.artist}</li>
-                                    <li>Album: {track.album}</li>
+                                    <li><span>Artist:</span> {track.artist}</li>
+                                    <li><span>Album:</span> {track.album}</li>
                                 </ul>
                             </div>
                         ))}

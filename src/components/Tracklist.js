@@ -50,10 +50,9 @@ function Tracklist (props) {
                         <a href={track.album.uri}><img src={track.album.images[2].url} alt="Album cover" className={styles.trackImg}/></a>
                         <ul>
                             <li><a href={track.uri}>{track.name}</a></li>
-                            <li>Artist: {track.artists[0].name}</li>
-                            <li>Album: {track.album.name}</li>
+                            <li><span>Artist:</span> {track.artists[0].name}</li>
+                            <li><span>Album:</span> {track.album.name}</li>
                         </ul>
-                        <button type="submit" value={`play${track.id}`}>Play</button>
                         <button type="submit" value={track.id} onClick={handleAddOnclick}>Add</button>
                     </div>
                 ))}
