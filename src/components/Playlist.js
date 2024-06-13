@@ -23,6 +23,7 @@ function Playlist (props) {
                         const newPlaylist = playlist;
                         newPlaylist.tracks = [...filteredPlaylist];
                         newPlaylist.isAddingTracks = true;
+                        newPlaylist.isChanged = true;
                         newPlaylists.push(newPlaylist);
                     } else {
                         newPlaylists.push(playlist);
@@ -79,6 +80,7 @@ function Playlist (props) {
                         playlist.title = newPlaylistName;
                         playlist.isRenaming = false;
                         playlist.isRenamed = true;
+                        playlist.isChanged = true;
                     } else {
                         playlist.isRenaming = false;
                     }

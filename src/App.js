@@ -12,6 +12,7 @@ function App() {
   const [newPlaylist, setNewPlaylistInput] = useState("");
   const [playlistId, setPlaylistId] = useState(0);
   const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [newPlaylistSavedToSpotify, setNewPlaylistSavedToSpotify] = useState(false);
 
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState();
@@ -40,6 +41,15 @@ function App() {
   useEffect(() => {
     queryApi();
   }, [searchOffSet]);
+
+  useEffect(() => {
+    const selectedPlaylist = getSelectedPlaylist();
+    if(playlists.length > 0) {
+      if(selectedPlaylist.isAddingTracks && newPlaylistSavedToSpotify) {
+        addPlaylistTracksToSpotifySave();
+      }
+    }
+  }, [newPlaylistSavedToSpotify])
 
   function handleLoginOnClick () {
     function createRandomString(length) {
@@ -81,22 +91,26 @@ function App() {
         customPlaylist = {
           id: playlistId, 
           title: newPlaylist, 
-          tracks: [], 
+          tracks: [],
+          spotifyId: "", 
           isSelected: false,
           isRenaming: false,
           isRenamed: false,
-          spotifyId: "",
-          isAddingTracks: false
+          isAddingTracks: false,
+          isCreated: false,
+          isChanged: true
         };
       } else {
         customPlaylist = {
           id: playlistId, 
           title: newPlaylist, 
-          tracks: [], 
+          tracks: [],
+          spotifyId: "", 
           isSelected: true,
           isRenaming: false,
-          spotifyId: "",
-          isAddingTracks: false
+          isRenamed: false,
+          isCreated: false,
+          isChanged: true
         };
       }
 
@@ -153,22 +167,33 @@ function App() {
 
   function handleSavePlaylistsToSpotifyOnClick () {
     const selectedPlaylist = getSelectedPlaylist();
-    if (!selectedPlaylist.spotifyId) {
-      createPlaylistToSpotify(selectedPlaylist);
-      setPlaylists((prev) => {
-        for (const playlist of prev) {
-          if (playlist.id === selectedPlaylist.id) {
-            selectedPlaylist.isRenamed = false;
-            selectedPlaylist.isAddingTracks = false;
-          }
+    if (selectedPlaylist.isChanged) {
+      if (!selectedPlaylist.isCreated) {
+        createPlaylistToSpotify(selectedPlaylist);
+      }
 
-          return [...prev];
-        }
-      });
-      alert("Your playlist was succesfully saved to spotify ")
-    } else if (selectedPlaylist.spotifyId && !selectedPlaylist.isAddingTracks && !selectedPlaylist.isRenamed) {
+      if (selectedPlaylist.isAddingTracks && selectedPlaylist.isCreated) {
+        addPlaylistTracksToSpotifySave(selectedPlaylist);
+      }
+
+      if (selectedPlaylist.isRenamed && selectedPlaylist.isCreated) {
+        renameSpotifyPlaylist(selectedPlaylist);
+      }
+
+      alert("Your playlist was succesfully saved to spotify")
+    } else {
       alert("The playlist you selected is already saved to spotify");
     }
+
+    setPlaylists((prev) => {
+      for (const playlist of prev) {
+        if (playlist.id === selectedPlaylist.id) {
+          selectedPlaylist.isChanged = false;
+        }
+
+        return [...prev];
+      }
+    });
   }
 
   function onAuthorized () {
@@ -184,8 +209,9 @@ function App() {
     return playlists.filter((playlist) => playlist.isSelected)[0];
   }
 
-  async function createPlaylistToSpotify (selectedPlaylist) {
+  async function createPlaylistToSpotify () {
     try{
+      const selectedPlaylist = getSelectedPlaylist();
       const endpoint = `https://api.spotify.com/v1/users/${userId}/playlists`
       const response = await fetch(endpoint, {
         method: "POST",
@@ -205,10 +231,47 @@ function App() {
           for (const playlist of prev) {
             if (playlist.id === selectedPlaylist.id) {
               playlist.spotifyId = jsonResponse.id;
+              playlist.isCreated = true;
             }
           }
 
           return [...prev];      
+        });
+
+        if(selectedPlaylist.isAddingTracks) {
+          setNewPlaylistSavedToSpotify(true);
+        }
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function renameSpotifyPlaylist () {
+    try {
+      const selectedPlaylist = getSelectedPlaylist();
+      const endpoint = `https://api.spotify.com/v1/playlists/${selectedPlaylist.spotifyId}`;
+      const response = await fetch(endpoint, {
+        method: "PUT",
+        headers: {
+          "Authorization" : "Bearer " + window.sessionStorage.getItem("token") 
+        },
+        ContentType : "application/json",
+        body: JSON.stringify({
+          "name" : selectedPlaylist.title
+        })
+      });
+
+      if (response.ok) {
+        setPlaylists((prev) => {
+          for (const playlist of prev) {
+            if (playlist.id === selectedPlaylist.id) {
+              selectedPlaylist.isRenamed = false;
+            }
+    
+            return [...prev];
+          }
         });
       }
     }
@@ -217,18 +280,49 @@ function App() {
     }
   }
 
-  async function renameSpotifyPlaylist (selectedPlaylist) {
-    const endpoint = `https://api.spotify.com/v1/playlists/${selectedPlaylist.spotifyId}`;
-    const response = await fetch(endpoint, {
-      method: "PUT",
-      headers: {
-        "Authorization" : "Bearer " + window.sessionStorage.getItem("token") 
-      },
-      ContentType : "application/json",
-      body: JSON.stringify({
-        "name" : selectedPlaylist.title,
-      })
-    });
+  async function addPlaylistTracksToSpotifySave () {
+    try {
+      const selectedPlaylist = getSelectedPlaylist();
+      const endpoint = `https://api.spotify.com/v1/playlists/${selectedPlaylist.spotifyId}/tracks`;
+      let uris = [];
+      let first = true;
+
+      for (const track of selectedPlaylist.tracks) {
+        const trackUri = track.uri;
+        uris.push(trackUri);
+      }
+
+      const response = await fetch(endpoint, {
+        method: "PUT",
+        headers: {
+          "Authorization" : "Bearer " + window.sessionStorage.getItem("token") 
+        },
+        ContentType : "application/json",
+        body : JSON.stringify({
+          "range_start" : 0,
+          "uris" : uris
+        })
+      });
+
+      if (response.ok) {
+        setPlaylists((prev) => {
+          for (const playlist of prev) {
+            if (playlist.id === selectedPlaylist.id) {
+              selectedPlaylist.isAddingTracks = false;
+            }
+    
+            return [...prev];
+          }
+        });
+
+        if(newPlaylistSavedToSpotify) {
+          setNewPlaylistSavedToSpotify(false);
+        }
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
 
   if(hasSessionToken) {

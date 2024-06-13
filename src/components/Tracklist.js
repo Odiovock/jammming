@@ -32,6 +32,7 @@ function Tracklist (props) {
                     }
                     playlist.tracks.push(trackdetails);
                     playlist.isAddingTracks = true;
+                    playlist.isChanged = true;
                 } else {
                     window.alert("This song is already part of the selected playlist");
                 }
