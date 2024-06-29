@@ -65,7 +65,7 @@ function App() {
       return result;
     }
     
-    var redirect_uri = 'https://spotify-playlist-manager.netlify.app'; // Your redirect uri
+    var redirect_uri = 'spotify-playlist-manager.netlify.app'; // Your redirect uri
 
     var state = createRandomString(16);
 
