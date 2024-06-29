@@ -135,7 +135,7 @@ function App() {
   setSearchResults();
 
   if (searchInput) {
-    const endpoint = searchBaseEndpoint + "?q=" + searchInput + "&type=track&limit=9" + "&offset=" + searchOffSet;
+    const endpoint = searchBaseEndpoint + "?q=" + searchInput + "&type=track&limit=9&offset=" + searchOffSet;
     try {
         const response = await fetch(endpoint, {
           method: "GET",
