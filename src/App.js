@@ -18,7 +18,7 @@ function App() {
   const [searchResults, setSearchResults] = useState();
   const [searchOffSet, setSearchOffSet] = useState("0");
 
-  const [client_id, setClientId] = useState("723d8a14cbdb4f5e81acee881eb7f308");
+  const client_id = "723d8a14cbdb4f5e81acee881eb7f308";
   const [userId, setUserId] = useState("");
   const [hasSessionToken, setHasSessionToken] = useState(false);
 
@@ -36,10 +36,13 @@ function App() {
       setPlaylists(JSON.parse(localsave));
       setPlaylistId(parseInt(localStorage.getItem("savedIndex")));
     }
+
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     queryApi();
+    // eslint-disable-next-line
   }, [searchOffSet]);
 
   useEffect(() => {
@@ -49,6 +52,7 @@ function App() {
         addPlaylistTracksToSpotifySave();
       }
     }
+    // eslint-disable-next-line
   }, [newPlaylistSavedToSpotify])
 
   function handleLoginOnClick () {
@@ -286,7 +290,6 @@ function App() {
       const selectedPlaylist = getSelectedPlaylist();
       const endpoint = `https://api.spotify.com/v1/playlists/${selectedPlaylist.spotifyId}/tracks`;
       let uris = [];
-      let first = true;
 
       for (const track of selectedPlaylist.tracks) {
         const trackUri = track.uri;

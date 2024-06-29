@@ -1,7 +1,5 @@
 import React from "react";
 import styles from "../styles/tracklist.module.css"
-import { click } from "@testing-library/user-event/dist/click";
-import { type } from "@testing-library/user-event/dist/type";
 
 function Tracklist (props) {
     const {
